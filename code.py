@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+from pytube import YouTube
 
 sg.theme('DarkBlack')
 
@@ -29,8 +30,10 @@ while True:
     if event == sg.WIN_CLOSED:
         break
     if event == 'Sumbit':
+        video_object = YouTube(values['-INPUT-'])
         window.close()
 
-        window = sg.Window('Youtube Download', layout)
+        window = sg.Window('Youtube Download', layout, finalize = True)
+        window['-TITLE-'].update(video_object.title)
 
 window.close()
