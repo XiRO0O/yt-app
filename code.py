@@ -2,6 +2,8 @@ import PySimpleGUI as sg
 
 sg.theme('DarkBlack')
 
+start_layout = [[sg.Input(key = '-INPUT-'),sg.Button('Sumbit')]]
+
 info_tab = [
     [sg.Text('Title:'),sg.Text('',key = '-TITLE-')],
     [sg.Text('Length:'),sg.Text('',key = '-LENGTH-')],
@@ -10,20 +12,17 @@ info_tab = [
     [
         sg.Text('Description:'),
         sg.Multiline('', key = '-DESCRIPTION-', size = (40,20), no_scrollbar = True, disabled = True)
-    ]
-]
+    ]]
 download_tab = [
     [sg.Frame('Best Quality',[[sg.Button('Download', key = '-BEST-'),sg.Text('', key = '-BESTRES-'),sg.Text('', key = '-BESTSIZE-')]])],
     [sg.Frame('Worst Quality',[[sg.Button('Download', key = '-WORST-'),sg.Text('', key = '-WORSTRES-'),sg.Text('', key = '-WORSTSIZE-')]])],
     [sg.Frame('Audio',[[sg.Button('Download', key = '-AUDIO-'),sg.Text('', key = '-AUDIOSIZE-')]])],
     [sg.VPush()],
-    [sg.Progress(100, size = (20,20), expand_x = True, key = '-PROGRESSBAR-')]
-]
-
+    [sg.Progress(100, size = (20,20), expand_x = True, key = '-PROGRESSBAR-')]]
 layout = [[sg.TabGroup([[
     sg.Tab('INFO',info_tab),sg.Tab('DOWNLOAD',download_tab)]])]]
 
-window = sg.Window('Downtube', layout)
+window = sg.Window('Downtube', start_layout)
 
 while True:
     event, values = window.read()
