@@ -1,6 +1,13 @@
 import PySimpleGUI as sg
 from pytube import YouTube
 
+def progress_check(stream, chunk, bytes_remaining):
+    progress_amount = 100 - round(bytes_remaining / stream.filesize * 100)
+    window['-PROGRESSBAR-'].update(progress_amount)
+
+def on_complete(stream, file_path):
+    window['-PROGRESSBAR-'].update(0)
+
 sg.theme('DarkBlack')
 start_layout = [[sg.Input(key = '-INPUT-'),sg.Button('Sumbit')]]
 info_tab = [
@@ -28,7 +35,7 @@ while True:
     if event == sg.WIN_CLOSED:
         break
     if event == 'Sumbit':
-        video_object = YouTube(values['-INPUT-'])
+        video_object = YouTube(values['-INPUT-'],on_progress_callback = progress_check, on_complete_callback = on_complete)
         window.close()
         window = sg.Window('Downtube', layout, finalize = True)
         window['-TITLE-'].update(video_object.title)
@@ -37,12 +44,19 @@ while True:
         window['-AUTHOR-'].update(video_object.author)
         window['-DESCRIPTION-'].update(video_object.description)
 
-    window['-BESTSIZE-'].update(f'{round(video_object.streams.get_highest_resolution().filesize / 1048576,1)} MB')
-    window['-BESTRES-'].update(video_object.streams.get_highest_resolution().resolution)
+        window['-BESTSIZE-'].update(f'{round(video_object.streams.get_highest_resolution().filesize / 1048576,1)} MB')
+        window['-BESTRES-'].update(video_object.streams.get_highest_resolution().resolution)
 
-    window['-WORSTSIZE-'].update(f'{round(video_object.streams.get_lowest_resolution().filesize / 1048576,1)} MB')
-    window['-WORSTRES-'].update(video_object.streams.get_lowest_resolution().resolution)
+        window['-WORSTSIZE-'].update(f'{round(video_object.streams.get_lowest_resolution().filesize / 1048576,1)} MB')
+        window['-WORSTRES-'].update(video_object.streams.get_lowest_resolution().resolution)
 
-    window['-AUDIOSIZE-'].update(f'{round(video_object.streams.get_audio_only().filesize / 1048576,1)} MB')
+        window['-AUDIOSIZE-'].update(f'{round(video_object.streams.get_audio_only().filesize / 1048576,1)} MB')
+
+    if event == '-BEST-':
+        video_object.streams.get_highest_resolution().download()
+    if event == '-WORST-':
+        video_object.streams.get_lowest_resolution().download()
+    if event == '-AUDIO-':
+        video_object.streams.get_audio_only().download()
 
 window.close()
