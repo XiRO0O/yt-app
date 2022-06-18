@@ -12,7 +12,12 @@ info_tab = [
         sg.Multiline('', key = '-DESCRIPTION-', size = (40,20), no_scrollbar = True, disabled = True)
     ]
 ]
-download_tab = [[]]
+download_tab = [
+    [sg.Frame('Best Quality',[[sg.Button('Download', key = '-BEST-'),sg.Text('', key = '-BESTRES-'),sg.Text('', key = '-BESTSIZE-')]])],
+    [sg.Frame('Worst Quality',[[sg.Button('Download', key = '-WORST-'),sg.Text('', key = '-WORSTRES-'),sg.Text('', key = '-WORSTSIZE-')]])],
+    [sg.Frame('Audio',[[sg.Button('Download', key = '-AUDIO-'),sg.Text('', key = '-AUDIOSIZE-')]])],
+    [sg.VPush()],
+]
 
 layout = [[sg.TabGroup([[
     sg.Tab('INFO',info_tab),sg.Tab('DOWNLOAD',download_tab)]])]]
