@@ -28,5 +28,9 @@ while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED:
         break
+    if event == 'Sumbit':
+        window.close()
+
+        window = sg.Window('Youtube Download', layout)
 
 window.close()
