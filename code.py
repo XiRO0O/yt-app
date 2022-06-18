@@ -2,9 +2,7 @@ import PySimpleGUI as sg
 from pytube import YouTube
 
 sg.theme('DarkBlack')
-
 start_layout = [[sg.Input(key = '-INPUT-'),sg.Button('Sumbit')]]
-
 info_tab = [
     [sg.Text('Title:'),sg.Text('',key = '-TITLE-')],
     [sg.Text('Length:'),sg.Text('',key = '-LENGTH-')],
@@ -32,8 +30,19 @@ while True:
     if event == 'Sumbit':
         video_object = YouTube(values['-INPUT-'])
         window.close()
-
-        window = sg.Window('Youtube Download', layout, finalize = True)
+        window = sg.Window('Downtube', layout, finalize = True)
         window['-TITLE-'].update(video_object.title)
+        window['-LENGTH-'].update(f'{round(video_object.length / 60,2)} minutes')
+        window['-VIEWS-'].update(video_object.views)
+        window['-AUTHOR-'].update(video_object.author)
+        window['-DESCRIPTION-'].update(video_object.description)
+
+    window['-BESTSIZE-'].update(f'{round(video_object.streams.get_highest_resolution().filesize / 1048576,1)} MB')
+    window['-BESTRES-'].update(video_object.streams.get_highest_resolution().resolution)
+
+    window['-WORSTSIZE-'].update(f'{round(video_object.streams.get_lowest_resolution().filesize / 1048576,1)} MB')
+    window['-WORSTRES-'].update(video_object.streams.get_lowest_resolution().resolution)
+
+    window['-AUDIOSIZE-'].update(f'{round(video_object.streams.get_audio_only().filesize / 1048576,1)} MB')
 
 window.close()
