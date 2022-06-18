@@ -17,6 +17,7 @@ download_tab = [
     [sg.Frame('Worst Quality',[[sg.Button('Download', key = '-WORST-'),sg.Text('', key = '-WORSTRES-'),sg.Text('', key = '-WORSTSIZE-')]])],
     [sg.Frame('Audio',[[sg.Button('Download', key = '-AUDIO-'),sg.Text('', key = '-AUDIOSIZE-')]])],
     [sg.VPush()],
+    [sg.Progress(100, size = (20,20), expand_x = True, key = '-PROGRESSBAR-')]
 ]
 
 layout = [[sg.TabGroup([[
